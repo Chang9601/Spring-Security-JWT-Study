@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
+import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
 import com.cos.jwt.filter.MyFilter3;
 
 @Configuration
@@ -30,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.addFilter(corsFilter) // @CrossOrigin: 인증 필요 X, 시큐리티 필터에 인증 등록
 			.formLogin().disable() // form 로그인 사용 X
 			.httpBasic().disable()
+			.addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
 			.authorizeRequests()
 			.antMatchers("/api/v1/user/**")
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
