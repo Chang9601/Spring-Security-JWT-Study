@@ -8,6 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cos.jwt.model.User;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@Getter
+@Setter
 public class PrincipalDetails implements UserDetails {
 
 	private final User user;

@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public SecurityConfig(CorsFilter corsFilter) {
 		this.corsFilter = corsFilter;
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(new MyFilter3(), BasicAuthenticationFilter.class);
