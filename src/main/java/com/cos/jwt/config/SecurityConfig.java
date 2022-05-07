@@ -9,15 +9,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.filter.CorsFilter;
 
 import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
+import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
 import com.cos.jwt.filter.MyFilter3;
+import com.cos.jwt.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CorsFilter corsFilter;
 	
-	public SecurityConfig(CorsFilter corsFilter) {
+	private final UserRepository userRepository;
+	
+	public SecurityConfig(CorsFilter corsFilter, UserRepository userRepository) {
 		this.corsFilter = corsFilter;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -32,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin().disable() // form 로그인 사용 X
 			.httpBasic().disable()
 			.addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
+			.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository)) //AuthenticationManager
 			.authorizeRequests()
 			.antMatchers("/api/v1/user/**")
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")

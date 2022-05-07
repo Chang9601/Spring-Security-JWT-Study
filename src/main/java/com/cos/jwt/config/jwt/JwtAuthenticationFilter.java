@@ -37,6 +37,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		System.out.println("JwtAuthenticationFilter: 로그인 시도");
 		
 		// 1. username, password
+		
+		// 2. authenticationManager로 정상인지 로그인 시도 -> PrincipalDetailsService 호출 -> loadUserByUsername() 실행
+		
+		// 3. PrincipalDetails를 세션에 저장(권한 관리 목적)
+		
+		// 4. JWT 토큰 만들어서 응답
+		
 		try {
 			/*
 			 * BufferedReader br = request.getReader(); String input = null;
@@ -65,13 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		// 2. authenticationManager로 정상인지 로그인 시도 -> PrincipalDetailsService 호출 -> loadUserByUsername() 실행
-		
-		// 3. PrincipalDetails를 세션에 저장(권한 관리 목적)
-		
-		// 4. JWT 토큰 만들어서 응답
-		
+
 		return null;
 	}
 	
@@ -93,7 +94,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withClaim("username", principalDetails.getUser().getUsername())
 				.sign(Algorithm.HMAC512("cos"));
 		
-		response.addHeader("Authorization", "Bear " + jwtToken);
+		response.addHeader("Authorization", "Bearer " + jwtToken);
 	}
 	
 	
